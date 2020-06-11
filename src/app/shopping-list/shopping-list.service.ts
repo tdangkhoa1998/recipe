@@ -1,11 +1,13 @@
+import { Subject } from 'rxjs';
 import { Injectable, EventEmitter } from '@angular/core';
 import { Ingreditent } from '../shared/ingredient.model';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ShoppingListService {
-  ingredientsChanged = new EventEmitter<Ingreditent[]>();
+  ingredientsChanged = new Subject<Ingreditent[]>();
 
   private ingredients: Ingreditent[] = [
     new Ingreditent('Apples', 5),
@@ -22,7 +24,7 @@ export class ShoppingListService {
 
   addIngredient(ingredient: Ingreditent) {
     this.ingredients.push(ingredient);
-    this.ingredientsChanged.emit(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 
   addIngredients(ingredients: Ingreditent[]) {
@@ -30,6 +32,6 @@ export class ShoppingListService {
     // it means for (let ingredient of ingredients){
     //   this.addIngredient(ingredient);
     // }
-    this.ingredientsChanged.emit(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 }
